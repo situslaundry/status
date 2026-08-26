@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Status - StatusApp</title>
+  <meta name="description" content="Detail status dan komentar publik di Social Status Platform.">
+  
+  <!-- Open Graph Fallback -->
+  <meta property="og:title" content="Status di StatusApp">
+  <meta property="og:description" content="Lihat status dan berikan komentar di platform ini.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="./assets/logo.svg">
+  <meta property="og:url" content="./status.html">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Status di StatusApp">
+  <meta name="twitter:description" content="Lihat status dan komentar publik.">
+  <meta name="twitter:image" content="./assets/logo.svg">
+
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+</head>
+<body>
+  <header class="top-header">
+    <a href="./index.html" class="brand">
+      <img src="./assets/logo.svg" alt="Logo">
+      <span>Detail Status</span>
+    </a>
+  </header>
+
+  <main class="container">
+    <div id="status-detail-container">
+      <div class="card skeleton skeleton-card"></div>
+    </div>
+
+    <!-- Section Komentar -->
+    <div class="card" style="margin-top: 16px;">
+      <h3 style="font-size: 1rem; margin-bottom: 12px;">Komentar</h3>
+      <form id="comment-form" style="margin-bottom: 16px;">
+        <div class="form-group">
+          <input type="text" id="comment-text" class="form-input" placeholder="Tulis komentar publik..." maxlength="500" required>
+        </div>
+        <button type="submit" class="btn" style="width: auto; padding: 6px 16px; font-size: 0.85rem;">Kirim</button>
+      </form>
+      <div id="comments-list"></div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="./index.html" class="nav-item"><span>🏠</span><span>Beranda</span></a>
+    <a href="./create.html" class="nav-item"><span>➕</span><span>Buat</span></a>
+    <a href="./login.html" id="nav-profile" class="nav-item"><span>👤</span><span>Profil</span></a>
+  </nav>
+
+  <script type="module" src="./js/app.js"></script>
+  <script type="module" src="./js/status.js"></script>
+</body>
+</html>
