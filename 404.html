@@ -2,15 +2,22 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Halaman Tidak Ditemukan - StatusApp</title>
-  <link rel="stylesheet" href="./css/style.css">
+  <title>Mengarahkan...</title>
+  <script>
+    // Menangkap path /@username dan mengalihkan ke profile.html?username=username
+    const pathname = window.location.pathname;
+    const segments = pathname.split('/');
+    const lastSegment = segments[segments.length - 1] || segments[segments.length - 2];
+
+    if (lastSegment && lastSegment.startsWith('@')) {
+      const username = lastSegment.replace('@', '');
+      window.location.replace('./profile.html?username=' + encodeURIComponent(username));
+    } else {
+      window.location.replace('./index.html');
+    }
+  </script>
 </head>
 <body>
-  <div class="container empty-state" style="margin-top: 60px;">
-    <h2>404</h2>
-    <p style="margin: 12px 0;">Halaman yang Anda tuju tidak ditemukan.</p>
-    <a href="./index.html" class="btn" style="display:inline-block; width: auto; padding: 8px 20px;">Kembali ke Beranda</a>
-  </div>
+  <p style="font-family: sans-serif; text-align: center; margin-top: 50px;">Mengarahkan...</p>
 </body>
 </html>
