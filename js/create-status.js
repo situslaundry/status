@@ -5,13 +5,13 @@ import {
   serverTimestamp, 
   getDoc 
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
-import { db, storage, auth } from "./firebase-config.js";
+import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+import { db, storage } from "./firebase-config.js";
 import { APP_CONFIG, showAlert, compressImage } from "./utils.js";
 import { observeAuth } from "./auth.js";
 
 let selectedFile = null;
-let mediaType = 'text'; // 'text', 'image', 'video'
+let mediaType = 'text';
 let currentUser = null;
 
 const form = document.getElementById('create-status-form');
@@ -31,7 +31,6 @@ observeAuth((user) => {
   }
 });
 
-// Reset input media
 function clearMediaSelection() {
   selectedFile = null;
   mediaType = 'text';
@@ -44,14 +43,8 @@ imageInput.addEventListener('change', async (e) => {
   const file = e.target.files[0];
   if (!file) return;
 
-  if (!APP_CONFIG.ALLOWED_IMAGE_TYPES.includes(file.type)) {
-    showAlert("Format gambar tidak didukung. Gunakan JPG, PNG, atau WEBP.", "error");
-    imageInput.value = '';
-    return;
-  }
-
   if (file.size > APP_CONFIG.MAX_IMAGE_SIZE_BYTES) {
-    showAlert("Ukuran gambar melebihi batas maksimal 10 MB.", "error");
+    showAlert("Ukuran gambar melebihi batas 10 MB.", "error");
     imageInput.value = '';
     return;
   }
@@ -63,6 +56,7 @@ imageInput.addEventListener('change', async (e) => {
   const img = document.createElement('img');
   img.src = URL.createObjectURL(file);
   img.style.maxWidth = '100%';
+  img.style.maxHeight = '300px';
   img.style.borderRadius = '8px';
   previewContainer.innerHTML = '';
   previewContainer.appendChild(img);
@@ -72,14 +66,8 @@ videoInput.addEventListener('change', (e) => {
   const file = e.target.files[0];
   if (!file) return;
 
-  if (!APP_CONFIG.ALLOWED_VIDEO_TYPES.includes(file.type)) {
-    showAlert("Format video tidak didukung. Gunakan MP4 atau WebM.", "error");
-    videoInput.value = '';
-    return;
-  }
-
   if (file.size > APP_CONFIG.MAX_VIDEO_SIZE_BYTES) {
-    showAlert("Ukuran video melebihi batas maksimal 100 MB.", "error");
+    showAlert("Ukuran video melebihi batas 100 MB.", "error");
     videoInput.value = '';
     return;
   }
@@ -102,53 +90,38 @@ form.addEventListener('submit', async (e) => {
 
   const text = statusTextInput.value.trim();
   if (!text && !selectedFile) {
-    showAlert("Status tidak boleh kosong.", "info");
-    return;
-  }
-
-  if (text.length > APP_CONFIG.MAX_STATUS_LENGTH) {
-    showAlert(`Status maksimal ${APP_CONFIG.MAX_STATUS_LENGTH} karakter.`, "error");
+    showAlert("Tulis status atau pilih media terlebih dahulu.", "info");
     return;
   }
 
   submitBtn.disabled = true;
-  submitBtn.textContent = "Mempublikasikan...";
+  submitBtn.textContent = "Mengunggah...";
 
   try {
     const postRef = doc(collection(db, "posts"));
     const postId = postRef.id;
     let mediaURL = "";
 
-    // Dapatkan data profil user
     const userDoc = await getDoc(doc(db, "users", currentUser.uid));
-    const userData = userDoc.data() || {};
+    const userData = userDoc.exists() ? userDoc.data() : {};
 
     if (selectedFile) {
+      progressContainer.style.display = 'block';
+      progressBar.style.width = '30%';
+
       let fileToUpload = selectedFile;
       if (mediaType === 'image') {
         fileToUpload = await compressImage(selectedFile);
       }
 
-      const storagePath = `posts/${postId}/${mediaType === 'image' ? 'images' : 'videos'}/${Date.now()}_${fileToUpload.name}`;
+      progressBar.style.width = '60%';
+      const fileExt = selectedFile.name.split('.').pop();
+      const storagePath = `posts/${postId}/${Date.now()}.${fileExt}`;
       const fileRef = ref(storage, storagePath);
-      const uploadTask = uploadBytesResumable(fileRef, fileToUpload);
 
-      progressContainer.style.display = 'block';
-
-      await new Promise((resolve, reject) => {
-        uploadTask.on(
-          'state_changed',
-          (snapshot) => {
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            progressBar.style.width = `${progress}%`;
-          },
-          (error) => reject(error),
-          async () => {
-            mediaURL = await getDownloadURL(uploadTask.snapshot.ref);
-            resolve();
-          }
-        );
-      });
+      const uploadResult = await uploadBytes(fileRef, fileToUpload);
+      progressBar.style.width = '90%';
+      mediaURL = await getDownloadURL(uploadResult.ref);
     }
 
     const postPayload = {
@@ -164,21 +137,21 @@ form.addEventListener('submit', async (e) => {
       visibility: "public",
       likeCount: 0,
       commentCount: 0,
-      script: "latin", // Dapat dikembangkan ke "shawibet", "javanese", dll.
-      language: "id",
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     };
 
     await setDoc(postRef, postPayload);
+    progressBar.style.width = '100%';
     showAlert("Status berhasil dipublikasikan!", "success");
+
     setTimeout(() => {
-      window.location.href = `./status.html?id=${postId}`;
-    }, 1000);
+      window.location.href = `./index.html`;
+    }, 800);
 
   } catch (err) {
-    console.error("Create status error: ", err);
-    showAlert("Gagal membuat status. Coba lagi.", "error");
+    console.error("Create status error:", err);
+    showAlert("Gagal mempublikasikan: " + (err.message || "Terjadi kesalahan"), "error");
     submitBtn.disabled = false;
     submitBtn.textContent = "Publikasikan";
     progressContainer.style.display = 'none';
