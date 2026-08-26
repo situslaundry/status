@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Buat Status - StatusApp</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <header class="top-header">
+    <a href="./index.html" class="brand">
+      <img src="./assets/logo.svg" alt="Logo">
+      <span>Buat Status</span>
+    </a>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <form id="create-status-form">
+        <div class="form-group">
+          <textarea id="status-text" class="form-textarea" placeholder="Apa yang Anda pikirkan? Mendukung Aksara Jawa, Sunda, Arab, Cyrillic, Shawibet, emoji..."></textarea>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+          <label class="btn" style="background: #e2e8f0; color: var(--text-main); font-size: 0.85rem; padding: 6px 12px; width: auto; cursor: pointer;">
+            📷 Gambar
+            <input type="file" id="image-input" accept="image/*" style="display:none;">
+          </label>
+          <label class="btn" style="background: #e2e8f0; color: var(--text-main); font-size: 0.85rem; padding: 6px 12px; width: auto; cursor: pointer;">
+            🎥 Video
+            <input type="file" id="video-input" accept="video/*" style="display:none;">
+          </label>
+        </div>
+
+        <div id="media-preview-container" style="margin-bottom: 16px;"></div>
+
+        <div id="upload-progress-container" style="display:none; width: 100%; background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 16px;">
+          <div id="upload-progress-bar" style="width: 0%; height: 100%; background: var(--primary); transition: width 0.2s;"></div>
+        </div>
+
+        <button type="submit" id="submit-btn" class="btn">Publikasikan</button>
+      </form>
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="./index.html" class="nav-item"><span>🏠</span><span>Beranda</span></a>
+    <a href="./create.html" class="nav-item active"><span>➕</span><span>Buat</span></a>
+    <a href="./login.html" id="nav-profile" class="nav-item"><span>👤</span><span>Profil</span></a>
+  </nav>
+
+  <script type="module" src="./js/app.js"></script>
+  <script type="module" src="./js/create-status.js"></script>
+</body>
+</html>
