@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profil Pengguna - StatusApp</title>
+  <title>Profil - StatusApp</title>
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="./css/responsive.css">
 </head>
@@ -11,29 +11,48 @@
   <header class="top-header">
     <a href="./index.html" class="brand">
       <img src="./assets/logo.svg" alt="Logo">
-      <span>Profil</span>
+      <span>Profil Pengguna</span>
     </a>
   </header>
 
   <main class="container">
     <div id="profile-header" class="card" style="text-align: center;">
       <img id="profile-avatar" src="./assets/default-avatar.svg" class="avatar" style="width: 72px; height: 72px; margin: 0 auto 12px;" alt="Avatar">
-      <h2 id="profile-name" style="font-size: 1.2rem;">-</h2>
+      <h2 id="profile-name">-</h2>
       <p id="profile-handle" style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 8px;">@-</p>
       <p id="profile-bio" style="font-size: 0.9rem; margin-bottom: 12px;">-</p>
-      <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-main);">
+      
+      <div style="font-size: 0.85rem; font-weight: 600; margin-bottom: 12px;">
         <span id="profile-post-count">0</span> Status Dibuat
       </div>
+
+      <!-- Tombol Edit Khusus Pemilik Akun -->
+      <button id="edit-profile-toggle-btn" class="btn" style="display:none; width: auto; padding: 6px 16px; font-size: 0.85rem; margin: 0 auto;">Edit Profil</button>
+
+      <!-- Form Edit Profil -->
+      <form id="edit-profile-form" style="display:none; text-align: left; margin-top: 16px; border-top: 1px solid var(--border); padding-top: 16px;">
+        <div class="form-group">
+          <label class="form-label" for="edit-display-name">Nama Tampilan</label>
+          <input type="text" id="edit-display-name" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="edit-bio">Bio</label>
+          <textarea id="edit-bio" class="form-textarea" rows="3" placeholder="Tulis bio singkat..."></textarea>
+        </div>
+        <button type="submit" id="save-profile-btn" class="btn">Simpan Perubahan</button>
+      </form>
     </div>
 
-    <h3 style="font-size: 1rem; margin-bottom: 12px; padding: 0 4px;">Semua Postingan</h3>
-    <div id="profile-posts"></div>
+    <h3 style="font-size: 1rem; margin-bottom: 12px; padding: 0 4px;">Daftar Status</h3>
+    <div id="profile-posts">
+      <div class="card skeleton skeleton-card"></div>
+    </div>
   </main>
 
   <nav class="bottom-nav">
     <a href="./index.html" class="nav-item"><span>🏠</span><span>Beranda</span></a>
     <a href="./create.html" class="nav-item"><span>➕</span><span>Buat</span></a>
-    <a href="./login.html" id="nav-profile" class="nav-item active"><span>👤</span><span>Profil</span></a>
+    <a href="./profile.html" id="nav-profile" class="nav-item active"><span>👤</span><span>Profil</span></a>
   </nav>
 
   <script type="module" src="./js/app.js"></script>
