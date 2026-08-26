@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Daftar Akun - StatusApp</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <div class="container" style="max-width: 400px; margin-top: 30px;">
+    <div class="card">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <img src="./assets/logo.svg" alt="Logo" style="width: 48px; height: 48px;">
+        <h2 style="margin-top: 8px;">Buat Akun Baru</h2>
+      </div>
+
+      <form id="register-form">
+        <div class="form-group">
+          <label class="form-label" for="reg-username">Username (@tanpa spasi)</label>
+          <input type="text" id="reg-username" class="form-input" placeholder="contoh: budi_99" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-display-name">Nama Tampilan</label>
+          <input type="text" id="reg-display-name" class="form-input" placeholder="Budi Santoso" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-email">Email</label>
+          <input type="email" id="reg-email" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-password">Password (min. 6 karakter)</label>
+          <input type="password" id="reg-password" class="form-input" required minlength="6">
+        </div>
+        <button type="submit" id="reg-btn" class="btn">Daftar</button>
+      </form>
+
+      <p style="text-align: center; margin-top: 16px; font-size: 0.85rem;">
+        Sudah punya akun? <a href="./login.html" style="color: var(--primary);">Login di sini</a>
+      </p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { registerUser } from "./js/auth.js";
+    import { showAlert } from "./js/utils.js";
+
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('reg-username').value.trim();
+      const displayName = document.getElementById('reg-display-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const password = document.getElementById('reg-password').value;
+      const btn = document.getElementById('reg-btn');
+
+      btn.disabled = true;
+      btn.textContent = "Mendaftarkan...";
+
+      try {
+        await registerUser(email, password, username, displayName);
+        showAlert("Pendaftaran berhasil!", "success");
+        setTimeout(() => window.location.href = './index.html', 1000);
+      } catch (err) {
+        showAlert(err.message || "Gagal mendaftar.", "error");
+        btn.disabled = false;
+        btn.textContent = "Daftar";
+      }
+    });
+  </script>
+</body>
+</html>
