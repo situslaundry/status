@@ -5,13 +5,14 @@ import { getStorage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-s
 
 // Ganti konfigurasi di bawah ini dengan credential Firebase Project milik Anda.
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBWGQDhBunROGQpJfTyh0V5zLzfvfz5PpA",
+  authDomain: "statusapp-ba73d.firebaseapp.com",
+  projectId: "statusapp-ba73d",
+  storageBucket: "statusapp-ba73d.firebasestorage.app",
+  messagingSenderId: "453181233876",
+  appId: "1:453181233876:web:5ac571185ee490da26b941"
 };
+
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
