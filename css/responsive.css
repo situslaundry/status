@@ -1,0 +1,27 @@
+@media (min-width: 768px) {
+  .container {
+    padding: 24px 16px;
+  }
+
+  .top-header,
+  .bottom-nav {
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+
+  .card {
+    transition: transform 0.15s ease-in-out;
+  }
+}
+
+@media (max-width: 360px) {
+  .brand span {
+    display: none;
+  }
+  .card-actions {
+    font-size: 0.75rem;
+  }
+  .action-btn {
+    padding: 4px 8px;
+  }
+}
